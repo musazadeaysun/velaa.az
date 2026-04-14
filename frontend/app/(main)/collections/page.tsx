@@ -170,7 +170,7 @@ const CollectionsPage = () => {
                   {t("coll.assistant_occasion")}
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {[t("coll.all"), "Toy", "Ziyafət", "Mərasim", "Nişan", "Məzuniyyət"].map((occ, idx) => {
+                  {[t("coll.all"), "Toy", "Ziyafət", "Nişan", "Məzuniyyət"].map((occ, idx) => {
                     const isAll = idx === 0;
                     const val = isAll ? null : occ;
                     return (

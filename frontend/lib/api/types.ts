@@ -99,6 +99,8 @@ export interface CreateProductPayload {
   stockQuantity: number;
   size?: string;
   occasion?: string;
+  phoneNumber?: string;
+  city?: string;
 }
 
 export interface LoginPayload {

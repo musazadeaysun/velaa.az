@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Trash2, ExternalLink, MapPin, Mail, Phone } from "lucide-react";
 import { fetchStores, Store, deleteLocalStore } from "@/lib/stores";
+import { approveStore, rejectStore } from "@/lib/api/client";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -29,6 +30,26 @@ const StoreTable: React.FC<StoreTableProps> = ({ searchTerm }) => {
     if (confirm("Bu mağazanı və bütün məhsullarını silmək istədiyinizə əminsiniz?")) {
       deleteLocalStore(id);
       void loadData();
+    }
+  };
+
+  const handleApprove = async (id: number) => {
+    try {
+      await approveStore(id);
+      alert("Mağaza təsdiqləndi.");
+      void loadData();
+    } catch (err) {
+      alert("Xəta baş verdi.");
+    }
+  };
+
+  const handleReject = async (id: number) => {
+    try {
+      await rejectStore(id);
+      alert("Mağaza ləğv edildi.");
+      void loadData();
+    } catch (err) {
+      alert("Xəta baş verdi.");
     }
   };
 
@@ -85,6 +106,22 @@ const StoreTable: React.FC<StoreTableProps> = ({ searchTerm }) => {
                   </td>
                   <td className="py-4 px-6">
                     <div className="flex items-center justify-center gap-3">
+                      {!store.active && !store.isLocal && (
+                        <>
+                          <button 
+                            onClick={() => handleApprove(store.id)}
+                            className="bg-green-50 text-green-600 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase hover:bg-green-600 hover:text-white transition"
+                          >
+                            Təsdiqlə
+                          </button>
+                          <button 
+                            onClick={() => handleReject(store.id)}
+                            className="bg-amber-50 text-amber-600 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase hover:bg-amber-600 hover:text-white transition"
+                          >
+                            Ləğv et
+                          </button>
+                        </>
+                      )}
                       <Link href={`/stores/${store.id}`} target="_blank">
                         <button className="p-2.5 hover:bg-[#FAF7F5] rounded-xl transition text-stone-400 hover:text-[#8E6969]">
                           <ExternalLink size={18} />

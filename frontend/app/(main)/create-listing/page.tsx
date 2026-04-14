@@ -44,6 +44,8 @@ const CreateListingPage = () => {
     size: "",
     occasion: "",
     photos: [] as File[],
+    phoneNumber: "",
+    city: "",
   });
 
   useEffect(() => {
@@ -107,36 +109,17 @@ const CreateListingPage = () => {
 
       const category = categoryMap[form.category] || "UNISEX";
       
-      // Try real API
-      try {
-        await createProduct(storeState.id, {
-          name: form.title,
-          description: form.description,
-          price: Number(form.sellPrice || form.rentPrice || 0),
-          dailyPrice: Number(form.rentPrice || form.sellPrice || 0),
-          category: category,
-          stockQuantity: 1,
-          size: form.size || undefined,
-          occasion: form.occasion || undefined,
-        });
-      } catch (apiErr) {
-        console.warn("API Create Product failed, falling back to local storage", apiErr);
-      }
-
-      // Always save locally for this demo
-      const localStore = getLocalStores().find(s => s.id === storeState.id);
-      saveLocalProduct({
+      await createProduct(storeState.id, {
         name: form.title,
         description: form.description,
         price: Number(form.sellPrice || form.rentPrice || 0),
-        rentPrice: Number(form.rentPrice || 0),
-        sellPrice: Number(form.sellPrice || 0),
+        dailyPrice: Number(form.rentPrice || form.sellPrice || 0),
         category: category,
-        backendCategory: category,
-        size: form.size || "M",
-        occasion: form.occasion || "Toy",
-        storeId: storeState.id,
-        storeName: localStore?.name || "My Store",
+        stockQuantity: 1,
+        size: form.size || undefined,
+        occasion: form.occasion || undefined,
+        phoneNumber: form.phoneNumber || undefined,
+        city: form.city || undefined,
       });
 
       setSubmitted(true);
@@ -259,9 +242,43 @@ const CreateListingPage = () => {
                   <option value="">Seçin</option>
                   <option value="Toy">Toy</option>
                   <option value="Ziyafət">Ziyafət</option>
-                  <option value="Mərasim">Mərasim</option>
                   <option value="Nişan">Nişan</option>
                   <option value="Məzuniyyət">Məzuniyyət</option>
+                </select>
+                <ChevronDown size={16} className="absolute right-4 top-10 text-gray-400 pointer-events-none" />
+              </div>
+
+              <div className="relative">
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                  {t("create_listing.phone_label")}
+                </label>
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  value={form.phoneNumber}
+                  onChange={handleChange}
+                  required
+                  placeholder="+994"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50"
+                />
+              </div>
+
+              <div className="relative">
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                  {t("create_listing.city_label")}
+                </label>
+                <select
+                  name="city"
+                  value={form.city}
+                  onChange={handleChange}
+                  required
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50 appearance-none pr-10"
+                >
+                  <option value="">Seçin</option>
+                  <option value="Bakı">Bakı</option>
+                  <option value="Sumqayıt">Sumqayıt</option>
+                  <option value="Gəncə">Gəncə</option>
+                  <option value="Digər">Digər</option>
                 </select>
                 <ChevronDown size={16} className="absolute right-4 top-10 text-gray-400 pointer-events-none" />
               </div>
@@ -379,7 +396,7 @@ const CreateListingPage = () => {
                   ? storeState.isActive
                     ? "Mağazanız aktivdir. Elan birbaşa backend-ə göndəriləcək."
                     : "Mağazanız yaradılıb, amma hələ aktiv deyil. Təsdiqdən sonra elan yerləşdirə biləcəksiniz."
-                  : "Elan yaratmaq üçün əvvəlcə mağaza yaratmalısınız."}
+                  : "Bu bölmədən yalnız mağaza sahibləri istifadə edə bilər."}
             </p>
             <button
               type="submit"

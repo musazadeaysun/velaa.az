@@ -227,6 +227,23 @@ export async function createStore(userId: number, payload: CreateStorePayload) {
   return unwrap(response);
 }
 
+export async function getStores(params?: { page?: number; size?: number }) {
+  const response = await withRetry(() =>
+    api.get<ApiResponse<ApiPage<StoreDto>>>("/stores", { params }),
+  );
+  return unwrap(response);
+}
+
+export async function approveStore(storeId: number) {
+  const response = await api.post<ApiResponse<StoreDto>>(`/stores/approve/${storeId}`);
+  return unwrap(response);
+}
+
+export async function rejectStore(storeId: number) {
+  const response = await api.post<ApiResponse<StoreDto>>(`/stores/reject/${storeId}`);
+  return unwrap(response);
+}
+
 export async function getStoreByUserId(userId: number) {
   const response = await withRetry(() =>
     api.get<ApiResponse<StoreDto>>(`/stores/user/${userId}`),

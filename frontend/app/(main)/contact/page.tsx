@@ -19,73 +19,43 @@ const Page = () => {
         <IoMdClose />
       </div>
       
-      <div className="flex flex-col lg:flex-row items-center gap-16">
-        <div className="w-full lg:w-1/2 text-center lg:text-left space-y-8">
-          <h2 className="text-[32px] md:text-[40px] font-serif font-bold text-[#4A3728]">
+      <div className="flex flex-col items-center justify-center text-center space-y-10 py-10">
+        <div className="space-y-6 max-w-2xl">
+          <h2 className="text-[32px] md:text-[45px] font-serif font-bold text-[#4A3728]">
             {t("contact.title")}
           </h2>
 
-          <p className="text-[15px] text-gray-500 leading-relaxed max-w-[450px] mx-auto lg:mx-0">
-            {t("contact.desc")}
+          <p className="text-[17px] text-gray-600 leading-relaxed">
+            {t("contact.teklif_irad")}
           </p>
-
-          <div className="space-y-6">
-            <div className="flex items-center justify-center lg:justify-start gap-4 text-[17px]">
-              <div className="w-10 h-10 rounded-full bg-[#FAF7F5] flex items-center justify-center text-[#8E6969]">
-                <CiMail size={22} />
-              </div>
-              <p className="font-semibold text-gray-700">vela7az@gmail.com</p>
-            </div>
-
-            <div className="flex items-center justify-center lg:justify-start gap-4 text-[17px]">
-              <div className="w-10 h-10 rounded-full bg-[#FAF7F5] flex items-center justify-center text-[#8E6969]">
-                <BsTelephoneInbound size={20} />
-              </div>
-              <p className="font-semibold text-gray-700">+994 77 127 97 59</p>
-            </div>
-          </div>
         </div>
 
-        <div className="w-full lg:w-1/2 bg-[#FAF7F5] p-8 rounded-2xl border border-stone-100">
-          <h2 className="text-[24px] font-serif font-bold mb-6 text-[#4A3728]">
-            {t("contact.write")}
-          </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl">
+          <a
+            href="mailto:vela7az@gmail.com"
+            className="flex flex-col items-center gap-4 p-8 rounded-2xl bg-[#FAF7F5] border border-stone-100 hover:border-[#8E6969] transition group shadow-sm"
+          >
+            <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-[#8E6969] shadow-inner group-hover:scale-110 transition">
+              <CiMail size={28} />
+            </div>
+            <p className="font-bold text-lg text-gray-800 tracking-tight">vela7az@gmail.com</p>
+            <span className="text-xs uppercase tracking-widest text-stone-400 font-bold whitespace-nowrap">
+              E-poçt vasitəsilə yazın
+            </span>
+          </a>
 
-          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); console.log("Contact Form Sent"); }}>
-            <input
-              type="text"
-              placeholder={t("contact.name")}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-[#8E6969] transition bg-white"
-              required
-            />
-
-            <input
-              type="tel"
-              placeholder={t("contact.phone")}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-[#8E6969] transition bg-white"
-              required
-            />
-
-            <input
-              type="email"
-              placeholder="E-mail"
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-[#8E6969] transition bg-white"
-            />
-
-            <textarea
-              placeholder={t("contact.message")}
-              rows={4}
-              className="w-full border border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-[#8E6969] transition bg-white resize-none"
-              required
-            />
-
-            <button
-              className="bg-[#8E6969] w-full h-[50px] rounded-full text-white font-bold uppercase tracking-widest text-xs hover:bg-[#725454] transition shadow-lg mt-4"
-              type="submit"
-            >
-              {t("contact.send")}
-            </button>
-          </form>
+          <a
+            href="tel:+994771279759"
+            className="flex flex-col items-center gap-4 p-8 rounded-2xl bg-[#FAF7F5] border border-stone-100 hover:border-[#8E6969] transition group shadow-sm"
+          >
+            <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-[#8E6969] shadow-inner group-hover:scale-110 transition">
+              <BsTelephoneInbound size={24} />
+            </div>
+            <p className="font-bold text-lg text-gray-800 tracking-tight">+994 77 127 97 59</p>
+            <span className="text-xs uppercase tracking-widest text-stone-400 font-bold whitespace-nowrap">
+              Zəng edin və ya WhatsApp
+            </span>
+          </a>
         </div>
       </div>
     </div>

@@ -54,27 +54,16 @@ const CreateStorePage = () => {
       setSubmitting(true);
       setError("");
       
-      // Try real API first if user is logged in
-      if (user) {
-        try {
-          await createStore(user.id, {
-            name: form.name,
-            email: form.email,
-            address: form.address,
-            phoneNumber: form.phoneNumber,
-          });
-        } catch (apiErr) {
-          console.warn("API failed, falling back to local storage", apiErr);
-        }
+      if (!user) {
+        setError("Mağaza yaratmaq üçün daxil olmalısınız.");
+        return;
       }
 
-      // Always save locally so it shows up in "Browse Stores" for the current session/browser
-      saveLocalStore({
+      await createStore(user.id, {
         name: form.name,
         email: form.email,
         address: form.address,
         phoneNumber: form.phoneNumber,
-        logoUrl: logoPreview || undefined,
       });
 
       setSubmitted(true);
