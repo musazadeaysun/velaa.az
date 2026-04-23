@@ -21,4 +21,7 @@ export interface Product {
   createdAt?: string;
   isNew?: boolean;
   isLocal?: boolean;
+  phoneNumber?: string;
+  city?: string;
+  sku?: string;
 }

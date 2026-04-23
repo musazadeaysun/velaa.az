@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Camera, AlertCircle, Phone, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const SellerAgreementPage = () => {
@@ -20,88 +20,137 @@ const SellerAgreementPage = () => {
       </section>
 
       {/* Content Section */}
-      <section className="max-w-5xl mx-auto py-16 px-6 lg:px-0">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2 space-y-12">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
-                  <span className="text-[#A37A7A]">01.</span> {t("seller_agreement.section_1")}
-                </h2>
-                <div className="text-gray-700 font-sans pl-10 space-y-2">
-                  <p>{t("seller_agreement.section_1_text")}</p>
-                </div>
-              </div>
+      <section className="max-w-4xl mx-auto py-16 px-6 lg:px-0">
+        <div className="space-y-12 font-sans text-gray-800 leading-relaxed">
 
-              <div className="space-y-4">
-                <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
-                  <span className="text-[#A37A7A]">02.</span> {t("seller_agreement.section_2")}
-                </h2>
-                <div className="text-gray-700 font-sans pl-10 space-y-3">
-                  <p>{t("seller_agreement.section_2_text")}</p>
-                </div>
-              </div>
-            </div>
+          {/* Giriş */}
+          <div className="bg-[#FAF7F5] border border-[#F2EBE6] p-8 rounded-2xl">
+            <p className="text-gray-700">
+              {t("seller_agreement.intro")}
+            </p>
+          </div>
 
-            <div className="bg-red-50 border border-red-100 p-8 rounded-2xl space-y-4 relative overflow-hidden">
-              <AlertCircle className="absolute -top-4 -right-4 w-24 h-24 text-red-100/50" />
-              <h2 className="text-2xl font-serif font-bold text-red-800 flex items-center gap-3">
-                <span className="text-red-600">03.</span> {t("seller_agreement.section_5")}
-              </h2>
-              <div className="text-red-900/80 font-sans pl-10 space-y-3">
-                <p>{t("seller_agreement.section_5_text")}</p>
-              </div>
-            </div>
-
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
-                  <span className="text-[#A37A7A]">04.</span> {t("seller_agreement.section_4")}
-                </h2>
-                <p className="text-gray-700 font-sans pl-10">{t("seller_agreement.section_4_text")}</p>
-              </div>
-
-              <div className="space-y-4">
-                <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
-                  <span className="text-[#A37A7A]">05.</span> {t("seller_agreement.section_3")}
-                </h2>
-                <p className="text-gray-700 font-sans pl-10">{t("seller_agreement.section_3_text")}</p>
-              </div>
+          {/* 1. XİDMƏTİN MAHİYYƏTİ */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
+              <span className="text-[#A37A7A]">01.</span> {t("seller_agreement.s1_title")}
+            </h2>
+            <div className="pl-10 space-y-3 text-gray-700">
+              <p><strong>1.1.</strong> {t("seller_agreement.s1_1")}</p>
+              <p><strong>1.2.</strong> {t("seller_agreement.s1_2")}</p>
+              <p><strong>1.3.</strong> {t("seller_agreement.s1_3")}</p>
+              <p><strong>1.4.</strong> {t("seller_agreement.s1_4")}</p>
             </div>
           </div>
 
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-[#FAF7F5] border border-[#F2EBE6] p-8 rounded-3xl sticky top-24">
-              <Camera className="w-12 h-12 text-[#A37A7A] mb-4" strokeWidth={1.5} />
-              <h3 className="text-xl font-serif font-bold text-[#4A3728] mb-6">{t("seller_agreement.image_requirements")}</h3>
-              <ul className="space-y-6 text-sm font-sans text-gray-700">
-                <li className="flex gap-4">
-                  <div className="w-6 h-6 rounded-full bg-[#A37A7A]/10 text-[#A37A7A] flex items-center justify-center shrink-0 font-bold italic">1</div>
-                  <p><span className="font-bold">{t("seller_agreement.image_requirement_1_title")}</span> {t("seller_agreement.image_requirement_1_text")}</p>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-6 h-6 rounded-full bg-[#A37A7A]/10 text-[#A37A7A] flex items-center justify-center shrink-0 font-bold italic">2</div>
-                  <p><span className="font-bold">{t("seller_agreement.image_requirement_2_title")}</span> {t("seller_agreement.image_requirement_2_text")}</p>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-6 h-6 rounded-full bg-[#A37A7A]/10 text-[#A37A7A] flex items-center justify-center shrink-0 font-bold italic">3</div>
-                  <p><span className="font-bold text-red-700 italic">{t("seller_agreement.image_requirement_3_title")}</span> {t("seller_agreement.image_requirement_3_text")}</p>
-                </li>
-              </ul>
-
-              <div className="mt-10 pt-8 border-t border-[#F2EBE6] space-y-4">
-                <div className="flex items-center gap-3 text-sm text-[#4A3728]">
-                  <Phone size={18} className="text-[#A37A7A]" />
-                  <span>{t("seller_agreement.phone")}</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-[#4A3728]">
-                  <Mail size={18} className="text-[#A37A7A]" />
-                  <span>{t("seller_agreement.email")}</span>
-                </div>
-              </div>
+          {/* 2. SATICININ HÜQUQ VƏ ÖHDƏLİKLƏRİ */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
+              <span className="text-[#A37A7A]">02.</span> {t("seller_agreement.s2_title")}
+            </h2>
+            <div className="pl-10 space-y-3 text-gray-700">
+              <p><strong>2.1.</strong> {t("seller_agreement.s2_1")}</p>
+              <p><strong>2.2.</strong> {t("seller_agreement.s2_2")}</p>
+              <p><strong>2.3.</strong> {t("seller_agreement.s2_3")}</p>
+              <p><strong>2.4.</strong> {t("seller_agreement.s2_4")}</p>
             </div>
           </div>
 
+          {/* 3. QADAĞAN OLUNMUŞ FƏALİYYƏTLƏR */}
+          <div className="bg-red-50 border border-red-100 p-8 rounded-2xl space-y-4">
+            <h2 className="text-2xl font-serif font-bold text-red-800 flex items-center gap-3">
+              <span className="text-red-600">03.</span> {t("seller_agreement.s3_title")}
+            </h2>
+            <div className="pl-10 space-y-4 text-red-900/80">
+              <div>
+                <p className="font-semibold mb-2">{t("seller_agreement.s3_1_head")}</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>{t("seller_agreement.s3_1_a")}</li>
+                  <li>{t("seller_agreement.s3_1_b")}</li>
+                  <li>{t("seller_agreement.s3_1_c")}</li>
+                  <li>{t("seller_agreement.s3_1_d")}</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-semibold mb-2">{t("seller_agreement.s3_2_head")}</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>{t("seller_agreement.s3_2_a")}</li>
+                  <li>{t("seller_agreement.s3_2_b")}</li>
+                  <li>{t("seller_agreement.s3_2_c")}</li>
+                </ul>
+              </div>
+              <p><strong>3.3.</strong> {t("seller_agreement.s3_3")}</p>
+            </div>
+          </div>
+
+          {/* 4. MƏSULİYYƏTİN MƏHDUDLAŞDIRILMASI */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
+              <span className="text-[#A37A7A]">04.</span> {t("seller_agreement.s4_title")}
+            </h2>
+            <div className="pl-10 space-y-3 text-gray-700">
+              <p><strong>4.1.</strong> {t("seller_agreement.s4_1")}</p>
+              <p><strong>4.2.</strong> {t("seller_agreement.s4_2")}</p>
+              <p><strong>4.3.</strong> {t("seller_agreement.s4_3")}</p>
+              <p><strong>4.4.</strong> {t("seller_agreement.s4_4")}</p>
+            </div>
+          </div>
+
+          {/* 5. PLATFORMANIN HÜQUQLARI */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
+              <span className="text-[#A37A7A]">05.</span> {t("seller_agreement.s5_title")}
+            </h2>
+            <div className="pl-10 space-y-3 text-gray-700">
+              <p><strong>5.1.</strong> {t("seller_agreement.s5_1")}</p>
+              <p><strong>5.2.</strong> {t("seller_agreement.s5_2")}</p>
+              <p><strong>5.3.</strong> {t("seller_agreement.s5_3")}</p>
+            </div>
+          </div>
+
+          {/* 6. MÜDDƏT VƏ LƏĞVETMƏ */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
+              <span className="text-[#A37A7A]">06.</span> {t("seller_agreement.s6_title")}
+            </h2>
+            <div className="pl-10 space-y-3 text-gray-700">
+              <p><strong>6.1.</strong> {t("seller_agreement.s6_1")}</p>
+              <p><strong>6.2.</strong> {t("seller_agreement.s6_2")}</p>
+              <p><strong>6.3.</strong> {t("seller_agreement.s6_3")}</p>
+            </div>
+          </div>
+
+          {/* 7. MƏXFİLİK */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
+              <span className="text-[#A37A7A]">07.</span> {t("seller_agreement.s7_title")}
+            </h2>
+            <div className="pl-10 space-y-3 text-gray-700">
+              <p><strong>7.1.</strong> {t("seller_agreement.s7_1")}</p>
+              <p><strong>7.2.</strong> {t("seller_agreement.s7_2")}</p>
+            </div>
+          </div>
+
+          {/* 8. ƏLAQƏ VƏ BİLDİRİŞLƏR */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-serif font-bold text-[#4A3728] flex items-center gap-3">
+              <span className="text-[#A37A7A]">08.</span> {t("seller_agreement.s8_title")}
+            </h2>
+            <div className="pl-10 space-y-3 text-gray-700">
+              <p><strong>8.1.</strong> {t("seller_agreement.s8_1")}</p>
+              <p><strong>8.2.</strong> {t("seller_agreement.s8_2")}</p>
+              <p className="flex items-center gap-2">
+                <strong>8.3.</strong> {t("seller_agreement.s8_3_pre")}
+                <Mail size={16} className="inline text-[#A37A7A]" />
+                <a href="mailto:info@vela.az" className="text-[#A37A7A] hover:underline font-semibold">info@vela.az</a>
+              </p>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="border-t border-gray-200 pt-8 text-center text-sm text-gray-500">
+            <p>© 2026 Vela.az – Bütün hüquqlar qorunur.</p>
+          </div>
         </div>
       </section>
     </main>

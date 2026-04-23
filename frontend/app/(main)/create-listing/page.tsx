@@ -93,13 +93,23 @@ const CreateListingPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!storeState.id) {
-      setError("Əvvəlcə hesabınız üçün mağaza yaradılmalıdır.");
+    if (!form.title.trim()) {
+      setError("Elan başlığı daxil edin.");
       return;
     }
 
-    if (!storeState.isActive) {
-      setError("Mağazanız hələ aktiv deyil. Təsdiqdən sonra elan yerləşdirə biləcəksiniz.");
+    if (!form.category) {
+      setError("Kateqoriya seçin.");
+      return;
+    }
+
+    if (!form.phoneNumber.trim()) {
+      setError("Telefon nömrəsi daxil edin.");
+      return;
+    }
+
+    if (!form.city) {
+      setError("Şəhər seçin.");
       return;
     }
 
@@ -108,19 +118,59 @@ const CreateListingPage = () => {
       setError("");
 
       const category = categoryMap[form.category] || "UNISEX";
-      
-      await createProduct(storeState.id, {
-        name: form.title,
-        description: form.description,
-        price: Number(form.sellPrice || form.rentPrice || 0),
-        dailyPrice: Number(form.rentPrice || form.sellPrice || 0),
-        category: category,
-        stockQuantity: 1,
-        size: form.size || undefined,
-        occasion: form.occasion || undefined,
-        phoneNumber: form.phoneNumber || undefined,
-        city: form.city || undefined,
-      });
+      const hasActiveStore = storeState.id && storeState.isActive;
+
+      if (hasActiveStore) {
+        // Mağazası olan istifadəçi: API-yə göndər
+        try {
+          await createProduct(storeState.id!, {
+            name: form.title,
+            description: form.description,
+            price: Number(form.sellPrice || form.rentPrice || 0),
+            dailyPrice: Number(form.rentPrice || form.sellPrice || 0),
+            category: category,
+            stockQuantity: 1,
+            size: form.size || undefined,
+            occasion: form.occasion || undefined,
+            phoneNumber: form.phoneNumber || undefined,
+            city: form.city || undefined,
+          });
+        } catch {
+          // API xətası olsa belə lokal olaraq saxla
+          saveLocalProduct({
+            name: form.title,
+            description: form.description,
+            price: Number(form.sellPrice || form.rentPrice || 0),
+            rentPrice: Number(form.rentPrice || 0),
+            sellPrice: Number(form.sellPrice || 0),
+            category: category,
+            backendCategory: category,
+            size: form.size || "M",
+            occasion: form.occasion || category,
+            storeId: storeState.id!,
+            phoneNumber: form.phoneNumber,
+            city: form.city,
+          });
+        }
+      } else {
+        // Mağazası olmayan istifadəçi: lokal olaraq saxla
+        const user = getSessionUser();
+        saveLocalProduct({
+          name: form.title,
+          description: form.description,
+          price: Number(form.sellPrice || form.rentPrice || 0),
+          rentPrice: Number(form.rentPrice || 0),
+          sellPrice: Number(form.sellPrice || 0),
+          category: category,
+          backendCategory: category,
+          size: form.size || "M",
+          occasion: form.occasion || category,
+          storeId: 0,
+          storeName: user?.username || "Fərdi Satıcı",
+          phoneNumber: form.phoneNumber,
+          city: form.city,
+        });
+      }
 
       setSubmitted(true);
     } catch (submitError) {
@@ -211,7 +261,7 @@ const CreateListingPage = () => {
 
               <div className="relative">
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
-                  Ölçü
+                  {t("create_listing.size_label")}
                 </label>
                 <select
                   name="size"
@@ -219,7 +269,7 @@ const CreateListingPage = () => {
                   onChange={handleChange}
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50 appearance-none pr-10"
                 >
-                  <option value="">Seçin</option>
+                  <option value="">{t("create_listing.select")}</option>
                   <option value="XS">XS</option>
                   <option value="S">S</option>
                   <option value="M">M</option>
@@ -231,7 +281,7 @@ const CreateListingPage = () => {
 
               <div className="relative">
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
-                  Münasibət
+                  {t("create_listing.occ_label")}
                 </label>
                 <select
                   name="occasion"
@@ -239,11 +289,11 @@ const CreateListingPage = () => {
                   onChange={handleChange}
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50 appearance-none pr-10"
                 >
-                  <option value="">Seçin</option>
-                  <option value="Toy">Toy</option>
-                  <option value="Ziyafət">Ziyafət</option>
-                  <option value="Nişan">Nişan</option>
-                  <option value="Məzuniyyət">Məzuniyyət</option>
+                  <option value="">{t("create_listing.select")}</option>
+                  <option value="Toy">{t("create_listing.occ_1")}</option>
+                  <option value="Ziyafət">{t("create_listing.occ_2")}</option>
+                  <option value="Nişan">{t("create_listing.occ_3")}</option>
+                  <option value="Məzuniyyət">{t("create_listing.occ_4")}</option>
                 </select>
                 <ChevronDown size={16} className="absolute right-4 top-10 text-gray-400 pointer-events-none" />
               </div>
@@ -274,7 +324,7 @@ const CreateListingPage = () => {
                   required
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50 appearance-none pr-10"
                 >
-                  <option value="">Seçin</option>
+                  <option value="">{t("create_listing.select")}</option>
                   <option value="Bakı">Bakı</option>
                   <option value="Sumqayıt">Sumqayıt</option>
                   <option value="Gəncə">Gəncə</option>
@@ -287,18 +337,18 @@ const CreateListingPage = () => {
 
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-stone-100 space-y-6">
             <h2 className="text-[#4A3728] font-serif font-bold text-xl flex items-center gap-2">
-              <DollarSign size={20} className="text-[#A37A7A]" /> Qiymət və Elan Növü
+              <DollarSign size={20} className="text-[#A37A7A]" /> {t("create_listing.price_info")}
             </h2>
 
             <div>
               <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">
-                Elan Növü
+                {t("create_listing.type_label")}
               </label>
               <div className="flex gap-3 flex-wrap">
                 {[
-                  { val: "rent", label: "Kirayə" },
-                  { val: "sell", label: "Satış" },
-                  { val: "both", label: "Kirayə + Satış" },
+                  { val: "rent", label: t("create_listing.type_rent") },
+                  { val: "sell", label: t("create_listing.type_sell") },
+                  { val: "both", label: t("create_listing.type_both") },
                 ].map((option) => (
                   <button
                     type="button"
@@ -320,7 +370,7 @@ const CreateListingPage = () => {
               {(form.type === "rent" || form.type === "both") && (
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
-                    Kirayə Qiyməti (AZN)
+                    {t("create_listing.rent_price_label")}
                   </label>
                   <input
                     type="number"
@@ -335,7 +385,7 @@ const CreateListingPage = () => {
               {(form.type === "sell" || form.type === "both") && (
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
-                    Satış Qiyməti (AZN)
+                    {t("create_listing.sell_price_label")}
                   </label>
                   <input
                     type="number"
@@ -352,20 +402,21 @@ const CreateListingPage = () => {
 
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-stone-100 space-y-6">
             <h2 className="text-[#4A3728] font-serif font-bold text-xl flex items-center gap-2">
-              <Tag size={20} className="text-[#A37A7A]" /> Ətraflı Məlumat
+              <Tag size={20} className="text-[#A37A7A]" /> {t("create_listing.detail_info")}
             </h2>
             <textarea
               name="description"
               value={form.description}
               onChange={handleChange}
               rows={5}
+              placeholder={t("create_listing.desc_placeholder")}
               className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] focus:ring-1 focus:ring-[#8E6969] transition bg-gray-50 resize-none"
             />
           </div>
 
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-stone-100 space-y-4">
             <h2 className="text-[#4A3728] font-serif font-bold text-xl flex items-center gap-2">
-              <Camera size={20} className="text-[#A37A7A]" /> Şəkillər
+              <Camera size={20} className="text-[#A37A7A]" /> {t("create_listing.photos")}
             </h2>
             <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-[#A37A7A]/40 rounded-xl cursor-not-allowed bg-[#FAF7F5] transition opacity-80">
               <Camera size={32} className="text-[#A37A7A] mb-2" strokeWidth={1.5} />
@@ -373,7 +424,7 @@ const CreateListingPage = () => {
                 Şəkil yükləmə tezliklə aktiv olacaq
               </span>
               <span className="mt-2 text-xs text-stone-400">
-                Hazırkı backend kontraktında şəkil upload endpointi görünmür
+                Backend-də şəkil upload endpointi hələ yaradılmayıb
               </span>
               <input
                 type="file"
@@ -386,18 +437,36 @@ const CreateListingPage = () => {
             </label>
           </div>
 
-          {error ? <p className="text-sm text-red-500">{error}</p> : null}
+          {error ? (
+            <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-lg p-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 flex-shrink-0">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          ) : null}
 
           <div className="bg-[#4A3728]/5 border border-[#4A3728]/10 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-            <p className="text-xs text-gray-500 leading-relaxed max-w-xl">
-              {storeLoading
-                ? "Mağaza məlumatları yoxlanılır..."
-                : storeState.id
-                  ? storeState.isActive
-                    ? "Mağazanız aktivdir. Elan birbaşa backend-ə göndəriləcək."
-                    : "Mağazanız yaradılıb, amma hələ aktiv deyil. Təsdiqdən sonra elan yerləşdirə biləcəksiniz."
-                  : "Bu bölmədən yalnız mağaza sahibləri istifadə edə bilər."}
-            </p>
+            <div className="text-xs text-gray-500 leading-relaxed max-w-xl space-y-1">
+              <p>
+                {t("create_listing.agreement_text_1")}{" "}
+                <a href="/seller-agreement" className="text-[#8E6969] underline">{t("create_listing.agreement_text_2")}</a>{" "}
+                {t("create_listing.agreement_text_3")}{" "}
+                <a href="/terms" className="text-[#8E6969] underline">{t("create_listing.agreement_text_4")}</a>{" "}
+                {t("create_listing.agreement_text_5")}
+              </p>
+              {storeLoading ? null : !storeState.id ? (
+                <p className="text-amber-600 font-medium">
+                  ℹ️ Mağazanız olmadığı üçün elan lokal olaraq saxlanacaq.
+                </p>
+              ) : !storeState.isActive ? (
+                <p className="text-amber-600 font-medium">
+                  ℹ️ Mağazanız hələ təsdiqlənməyib. Elan lokal olaraq saxlanacaq.
+                </p>
+              ) : null}
+            </div>
             <button
               type="submit"
               disabled={submitting || storeLoading}

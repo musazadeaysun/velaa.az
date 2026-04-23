@@ -37,6 +37,9 @@ export function mapProductDtoToProduct(product: ProductDto): Product {
     storeName: product.storeName,
     createdAt: product.createdAt,
     isNew: now - createdAtTime < 1000 * 60 * 60 * 24 * 30,
+    phoneNumber: (product as any).phoneNumber,
+    city: (product as any).city,
+    sku: product.sku || undefined,
   };
 }
 
@@ -91,6 +94,13 @@ export function saveLocalProduct(product: Partial<Product>) {
   };
   localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify([newProduct, ...current]));
   return newProduct;
+}
+
+export function updateLocalProduct(id: number, updates: Partial<Product>) {
+  if (typeof window === "undefined") return;
+  const current = getLocalProducts();
+  const updated = current.map((p) => (p.id === id ? { ...p, ...updates } : p));
+  localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify(updated));
 }
 
 export function deleteLocalProduct(id: number) {

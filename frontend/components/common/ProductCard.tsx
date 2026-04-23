@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Heart, Share2, MessageCircle, Copy, Check, ShoppingBag, Trash2 } from "lucide-react";
+import { Heart, Share2, MessageCircle, Copy, Check, ShoppingBag, Trash2, Phone } from "lucide-react";
 import { Product } from "@/app/(main)/collections/productSlice";
 import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -81,12 +81,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
     e.stopPropagation();
     setShowWarning(true);
     setTimeout(() => setShowWarning(false), 3000);
-    // addToCart({
-    //   id: product.id,
-    //   name: product.name,
-    //   price: priceType === "rent" ? product.rentPrice : product.sellPrice,
-    //   image: product.image
-    // }, priceType);
   };
 
   return (
@@ -213,9 +207,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
               {product.size}
             </span>
           </div>
-          <p className="text-[11px] text-gray-400 uppercase tracking-widest">
-            {localizedProduct[`category_${localizedKey}`] || product.category}
+          <p className="text-[11px] text-gray-400 uppercase tracking-widest flex justify-between items-center">
+            <span>{localizedProduct[`category_${localizedKey}`] || product.category}</span>
+            <span className="flex items-center gap-1">
+              {product.city && <span className="text-[10px] lowercase opacity-70 italic">{product.city}</span>}
+              {!product.phoneNumber && product.isLocal && <span className="text-[8px] text-red-300 font-normal"> (no-num)</span>}
+            </span>
           </p>
+
+          {/* Aggressive Prominent Phone Number Display */}
+          {product.phoneNumber && (
+            <div className="pt-1">
+              <a 
+                href={`tel:${product.phoneNumber}`}
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#8E6969] text-white text-[12px] font-black shadow-md hover:bg-[#725454] transition-all transform hover:scale-105"
+              >
+                <Phone size={12} fill="white" />
+                <span>{product.phoneNumber}</span>
+              </a>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-3">

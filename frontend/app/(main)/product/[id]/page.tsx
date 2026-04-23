@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -11,6 +12,8 @@ import {
   ArrowLeft,
   ShieldCheck,
   RotateCcw,
+  Phone,
+  MessageCircle,
 } from "lucide-react";
 import ProductCard from "@/components/common/ProductCard";
 import { useCart } from "@/context/CartContext";
@@ -188,6 +191,33 @@ const ProductDetailPage = () => {
                 {t("product.size")}: <span className="font-bold text-black">{product.size}</span>
               </span>
             </div>
+
+            {product.phoneNumber && (
+              <div className="flex flex-col gap-2 py-4">
+                <div className="flex items-center gap-3">
+                  <a 
+                    href={`tel:${product.phoneNumber}`}
+                    className="flex-1 h-14 flex items-center justify-center gap-3 bg-[#8E6969]/5 text-[#8E6969] rounded-2xl border border-[#8E6969]/10 font-bold hover:bg-[#8E6969]/10 transition-colors"
+                  >
+                    <Phone size={18} />
+                    {product.phoneNumber}
+                  </a>
+                  <a 
+                    href={`https://wa.me/${product.phoneNumber.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-14 h-14 flex items-center justify-center bg-green-500 text-white rounded-2xl shadow-lg shadow-green-500/20 hover:bg-green-600 transition-colors"
+                  >
+                    <MessageCircle size={22} />
+                  </a>
+                </div>
+                {product.city && (
+                  <p className="text-xs text-gray-400 italic px-1">
+                    📍 {product.city}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="p-2 bg-stone-50 rounded-3xl flex gap-2 border border-stone-100">
