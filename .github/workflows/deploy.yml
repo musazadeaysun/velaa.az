@@ -16,8 +16,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /root/var/Vela.az/frontend
-            git pull new main
+            cd /root/new-velaa
+            git pull origin main
+            cd frontend
             npm install
             npm run build
             pm2 restart velo.az
